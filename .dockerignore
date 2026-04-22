@@ -1,0 +1,21 @@
+# Node modules (we install them inside container)
+node_modules
+
+# Build output
+build
+
+# Git files (not needed in image)
+.git
+.gitignore
+.gitattributes
+
+# Logs
+*.log
+
+# Local env files
+.env
+
+# IDE / OS files
+.vscode/
+.idea/
+.DS_Store
