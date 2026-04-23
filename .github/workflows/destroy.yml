@@ -1,0 +1,61 @@
+name: Destoying terraform code from AWS
+
+on:
+  workflow_dispatch:
+   inputs:
+    confirm:
+     description: "Type DESTROY to confirm"
+     required: true
+
+
+permissions:
+  id-token: write
+  contents: read
+
+
+env: 
+    AWS_REGION: eu-west-2
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./infra
+
+
+
+    steps: 
+
+          - name: Validate confirmation
+            run: |
+              if [ "${{ github.event.inputs.confirm }}" != "DESTROY" ]; then
+                echo "Confirmation failed. Exiting."
+                exit 1
+              fi
+
+          - name: Checkout code
+            uses: actions/checkout@v4
+
+          - name: Configure AWS credentials (OIDC) 
+            uses: aws-actions/configure-aws-credentials@v4
+            with: 
+             role-to-assume: ${{ secrets.TERRAFORM_ARN }}
+             aws-region: eu-west-2
+
+          - name: Install Terraform
+            uses: hashicorp/setup-terraform@v1
+            with:
+              terraform_version: 1.7.0
+
+          - name: terraform init
+            run: terraform init
+
+          - name: terraform plan before destory 
+            run: terraform plan -destroy  
+
+          - name: terraform destroy with SHA as variable 
+            run: terraform destroy --auto-approve 
+
+
+ 
