@@ -22,12 +22,13 @@ jobs:
 
     steps:
 
+      - name: Checkout code
+        uses: actions/checkout@v4
 
 
-      - name: Debug structure
-        run: |
-          pwd
-          ls -R
+      - name: Debug repo structure 
+        run : ls -R 
+
 
       - name: Validate confirmation
         run: |
@@ -36,8 +37,7 @@ jobs:
             exit 1
           fi
 
-      - name: Checkout code
-        uses: actions/checkout@v4
+        
 
       - name: Configure AWS credentials (OIDC) 
         uses: aws-actions/configure-aws-credentials@v4
