@@ -1,11 +1,11 @@
-name: Deploying terraform code to AWS 
+name: Deploying terraform code to AWS
 
 on:
   workflow_dispatch:
-   inputs:
-    confirm:
-     description: "Type DEPLOY to confirm"
-     required: true
+    inputs:
+      confirm:
+        description: "Type DEPLOY to confirm"
+        required: true
 
 permissions:
   id-token: write
@@ -13,22 +13,26 @@ permissions:
 
 jobs:
   deploy:
+
     runs-on: ubuntu-latest
 
+    concurrency:
+      group: terraform
+      cancel-in-progress: false
 
-    defaults: 
-     run: 
-      working-directory: infra
+    timeout-minutes: 15
+
+    defaults:
+      run:
+        working-directory: infra
 
     steps:
 
       - name: Checkout code
         uses: actions/checkout@v4
 
-
-      - name: Debug repo structure 
-        run : ls -R 
-
+      - name: Debug repo structure
+        run: ls -R
 
       - name: Validate confirmation
         run: |
@@ -37,42 +41,37 @@ jobs:
             exit 1
           fi
 
-        
-
-      - name: Configure AWS credentials (OIDC) 
+      - name: Configure AWS credentials (OIDC)
         uses: aws-actions/configure-aws-credentials@v4
-        with: 
-         role-to-assume: arn:aws:iam::337170977317:role/TerraformResourceAccess
-         aws-region: eu-west-2
+        with:
+          role-to-assume: arn:aws:iam::337170977317:role/TerraformResourceAccess
+          aws-region: eu-west-2
 
       - name: Install Terraform
         uses: hashicorp/setup-terraform@v1
         with:
           terraform_version: 1.7.0
 
-      - name: terraform init
+      - name: Terraform init
         run: terraform init
 
+      - name: Terraform fmt check
+        run: terraform fmt -check
 
-      - name: terraform fmt
-        run:  terraform fmt -check
-
-      - name: setup tflint
+      - name: Setup TFLint
         uses: terraform-linters/setup-tflint@v1
 
-      - name: Initialize tflint
+      - name: Initialize TFLint
         run: tflint --init
-        
-      - name: tflint
+
+      - name: Run TFLint
         run: tflint --config .tflint.hcl
-         
-      - name: Run terraform validate
-        run:  terraform validate 
+
+      - name: Terraform validate
+        run: terraform validate
 
       - name: Terraform plan (debug)
         run: TF_LOG=INFO terraform plan
-        
-      - name: terraform apply with SHA as variable 
-        run: terraform apply --auto-approve -var="image_tag=${{ github.sha }}"
-         
 
+      - name: Terraform apply (with SHA)
+        run: terraform apply --auto-approve -var="image_tag=${{ github.sha }}"
