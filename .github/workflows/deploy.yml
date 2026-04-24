@@ -69,8 +69,8 @@ jobs:
       - name: Run terraform validate
         run:  terraform validate 
 
-      - name: terraform plan
-        run: terraform plan 
+      - name: Terraform plan (debug)
+        run: TF_LOG=INFO terraform plan
         
       - name: terraform apply with SHA as variable 
         run: terraform apply --auto-approve -var="image_tag=${{ github.sha }}"
