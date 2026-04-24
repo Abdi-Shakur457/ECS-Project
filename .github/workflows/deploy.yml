@@ -18,7 +18,7 @@ jobs:
 
     defaults: 
      run: 
-      working-directory: ./infra
+      working-directory: ECS-Project/infra
 
     steps:
 
