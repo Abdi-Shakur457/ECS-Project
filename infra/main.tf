@@ -18,7 +18,7 @@ module "iam" {
 module "acm" {
   source      = "./modules/acm"
   domain_name = var.domain_name
-  
+
 }
 
 
@@ -29,7 +29,7 @@ module "cloudflare_validation" {
     cloudflare = cloudflare
   }
 
-  zone_id = var.cloudflare_zone_id
+  zone_id                   = var.cloudflare_zone_id
   domain_validation_options = module.acm.domain_validation_options
 }
 

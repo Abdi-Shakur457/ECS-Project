@@ -53,23 +53,23 @@ variable "image_uri" {
 
 variable "domain_name" {
   description = "The domain name for the ACM certificate"
-  type = string
+  type        = string
 }
 
 variable "region" {
   description = "the region to deploy the infrastructure"
-  type = string
+  type        = string
 }
 
 variable "cloudflare_api_token" {
   description = "Cloudflare API token"
   sensitive   = true
-  type = string
+  type        = string
 }
 
 variable "cloudflare_zone_id" {
   description = "Cloudflare Zone ID"
-  type = string
+  type        = string
 }
 
 variable "image_tag" {
