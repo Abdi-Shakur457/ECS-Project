@@ -50,6 +50,9 @@ jobs:
 
       - name: setup tflint
         uses: terraform-linters/setup-tflint@v1
+
+      - name: Initialize tflint
+        run: tflint --init
         
       - name: tflint
         run: tflint --config .tflint.hcl
