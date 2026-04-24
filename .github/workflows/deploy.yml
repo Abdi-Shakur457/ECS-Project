@@ -15,6 +15,11 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
 
+
+    defaults: 
+     run: 
+      working-directory: ./infra
+
     steps:
 
       - name: Validate confirmation
@@ -26,9 +31,6 @@ jobs:
 
       - name: Checkout code
         uses: actions/checkout@v4
-
-      - name: Set Working Directory 
-        run: cd infra
 
       - name: Configure AWS credentials (OIDC) 
         uses: aws-actions/configure-aws-credentials@v4
