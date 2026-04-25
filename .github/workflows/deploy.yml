@@ -70,8 +70,9 @@ jobs:
       - name: Terraform validate
         run: terraform validate
 
-      - name: Terraform plan (debug)
-        run: TF_LOG=INFO terraform plan
+      - name: Terraform plan
+        run: terraform plan -lock=false 
+
 
       - name: Terraform apply (with SHA)
         run: terraform apply --auto-approve -var="image_tag=${{ github.sha }}"
