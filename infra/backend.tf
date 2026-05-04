@@ -27,8 +27,8 @@ terraform {
     bucket         = "ecs-s3-v1"
     key            = "ecs-project/terraform.tfstate"
     region         = "eu-west-2"
-    dynamodb_table = "ecs-terraform-locks"
     encrypt        = true
+    dynamodb_table = "ecs-terraform-locks"
   }
 }
 
