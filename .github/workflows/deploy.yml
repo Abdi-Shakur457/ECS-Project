@@ -93,7 +93,7 @@ jobs:
         run: |
          echo "TOKEN LENGTH:"
          echo "${TF_VAR_cloudflare_api_token}" | wc -c
-         env:
+        env:
           TF_VAR_cloudflare_api_token: ${{ secrets.CLOUDFLARE_API_TOKEN }}
 
       - name: terraform plan
