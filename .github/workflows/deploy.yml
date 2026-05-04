@@ -11,6 +11,23 @@ permissions:
   id-token: write
   contents: read
 
+env: 
+  AWS_REGION: eu-west-2
+  TF_VAR_cloudflare_api_token: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+  TF_VAR_cloudflare_zone_id: ${{ secrets.CLOUDFLARE_ZONE_ID }}
+  TF_VAR_image_uri: ${{ secrets.IMAGE_URI }}
+  TF_VAR_VPC_CIDR: ${{ secrets.VPC_CIDR }}
+  TF_VAR_VPC_CIDR_PRIVATE1: ${{ secrets.VPC_CIDR_PRIVATE1 }}
+  TF_VAR_VPC_CIDR_PRIVATE2: ${{ secrets.VPC_CIDR_PRIVATE2 }}
+  TF_VAR_VPC_CIDR_PUBLIC1: ${{ secrets.VPC_CIDR_PUBLIC1 }}
+  TF_VAR_VPC_CIDR_PUBLIC2: ${{ secrets.VPC_CIDR_PUBLIC2 }}
+  TF_VAR_ecs_cpu: "512"
+  TF_VAR_ecs_memory: "1024"
+  TF_VAR_container_port: 3000
+  TF_VAR_host_port: 3000
+  TF_VAR_domain_name: "ecs.abdishakurosman.uk"
+  TF_VAR_image_tag: ${{ github.sha }}
+
 jobs:
   deploy:
 
@@ -44,8 +61,9 @@ jobs:
       - name: Configure AWS credentials (OIDC)
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          role-to-assume: arn:aws:iam::337170977317:role/TerraformResourceAccess
-          aws-region: eu-west-2
+          role-to-assume: ${{ secrets.TERRAFORM_ARN }}
+          aws-region: ${{ env.AWS_REGION }}
+      
 
       - name: Install Terraform
         uses: hashicorp/setup-terraform@v1
@@ -70,9 +88,17 @@ jobs:
       - name: Terraform validate
         run: terraform validate
 
+
+      - name: Debug TF_VAR injection
+        run: |
+         echo "TOKEN LENGTH:"
+         echo "${TF_VAR_cloudflare_api_token}" | wc -c
+         env:
+          TF_VAR_cloudflare_api_token: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+
       - name: terraform plan
         run: terraform plan -lock=false 
 
 
       - name: Terraform apply (with SHA)
-        run: terraform apply --auto-approve -var="image_tag=${{ github.sha }}"
+        run: terraform apply --auto-approve
