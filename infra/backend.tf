@@ -16,7 +16,7 @@ terraform {
   backend "s3" {
     bucket         = "ecs-s3-v1"
     key            = "ecs-project/terraform.tfstate"
-    region         = var.region
+    region         = "eu-west-2"
     encrypt        = true
     dynamodb_table = "ecs-terraform-locks"
   }
