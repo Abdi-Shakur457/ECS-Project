@@ -12,17 +12,7 @@ terraform {
       version = "~> 4.0"
     }
   }
-}
-provider "cloudflare" {
-  api_token = var.cloudflare_api_token
- }
 
-provider "aws" {
-  region = var.region
-  #Configuration options
-}
-
-terraform {
   backend "s3" {
     bucket         = "ecs-s3-v1"
     key            = "ecs-project/terraform.tfstate"
@@ -31,4 +21,3 @@ terraform {
     dynamodb_table = "ecs-terraform-locks"
   }
 }
-
