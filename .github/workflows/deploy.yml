@@ -3,24 +3,23 @@ name: Deploying terraform code to AWS
 on:
   workflow_dispatch:
     inputs:
-      confirm:
-        description: "Type DEPLOY to confirm"
+      image_tag:
+        description: "Docker image tag from build pipeline (github.sha)"
         required: true
 
 permissions:
   id-token: write
   contents: read
 
-env: 
+env:
   AWS_REGION: eu-west-2
   TF_VAR_cloudflare_api_token: ${{ secrets.CLOUDFLARE_API_TOKEN }}
   TF_VAR_cloudflare_zone_id: ${{ secrets.CLOUDFLARE_ZONE_ID }}
   TF_VAR_image_uri: ${{ secrets.IMAGE_URI }}
-  TF_VAR_image_tag: ${{ github.sha }}
+  TF_VAR_image_tag: ${{ github.event.inputs.image_tag }}
 
 jobs:
   deploy:
-
     runs-on: ubuntu-latest
 
     concurrency:
@@ -34,26 +33,17 @@ jobs:
         working-directory: infra
 
     steps:
-
       - name: Checkout code
         uses: actions/checkout@v4
 
       - name: Debug repo structure
         run: ls -R
 
-      - name: Validate confirmation
-        run: |
-          if [ "${{ github.event.inputs.confirm }}" != "DEPLOY" ]; then
-            echo "Confirmation failed. Exiting."
-            exit 1
-          fi
-
       - name: Configure AWS credentials (OIDC)
         uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: ${{ secrets.TERRAFORM_ARN }}
           aws-region: ${{ env.AWS_REGION }}
-      
 
       - name: Install Terraform
         uses: hashicorp/setup-terraform@v1
@@ -78,15 +68,8 @@ jobs:
       - name: Terraform validate
         run: terraform validate
 
+      - name: Terraform plan
+        run: terraform plan -lock=false
 
-      - name: Debug TF_VAR injection
-        run: |
-         echo "TOKEN LENGTH:"
-         echo "${TF_VAR_cloudflare_api_token}" | wc -c
-
-      - name: terraform plan
-        run: terraform plan -lock=false 
-
-
-      - name: Terraform apply (with SHA)
+      - name: Terraform apply
         run: terraform apply --auto-approve
