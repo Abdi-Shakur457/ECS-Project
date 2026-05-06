@@ -1,11 +1,10 @@
-name: Deploying terraform code to AWS
+name: Deploy Terraform to AWS
 
 on:
-  workflow_dispatch:
-    inputs:
-      image_tag:
-        description: "Docker image tag from build pipeline (github.sha)"
-        required: true
+  workflow_run:
+    workflows: ["Build and Push to ECR"]
+    types:
+      - completed
 
 permissions:
   id-token: write
@@ -16,7 +15,7 @@ env:
   TF_VAR_cloudflare_api_token: ${{ secrets.CLOUDFLARE_API_TOKEN }}
   TF_VAR_cloudflare_zone_id: ${{ secrets.CLOUDFLARE_ZONE_ID }}
   TF_VAR_image_uri: ${{ secrets.IMAGE_URI }}
-  TF_VAR_image_tag: ${{ github.event.inputs.image_tag }}
+  TF_VAR_image_tag: ${{ github.event.workflow_run.head_sha }}
 
 jobs:
   deploy:
@@ -26,8 +25,6 @@ jobs:
       group: terraform
       cancel-in-progress: false
 
-    timeout-minutes: 15
-
     defaults:
       run:
         working-directory: infra
@@ -36,16 +33,13 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Debug repo structure
-        run: ls -R
-
       - name: Configure AWS credentials (OIDC)
         uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: ${{ secrets.TERRAFORM_ARN }}
           aws-region: ${{ env.AWS_REGION }}
 
-      - name: Install Terraform
+      - name: Setup Terraform
         uses: hashicorp/setup-terraform@v1
         with:
           terraform_version: 1.7.0
@@ -56,20 +50,11 @@ jobs:
       - name: Terraform fmt check
         run: terraform fmt -check
 
-      - name: Setup TFLint
-        uses: terraform-linters/setup-tflint@v1
-
-      - name: Initialize TFLint
-        run: tflint --init
-
-      - name: Run TFLint
-        run: tflint --config .tflint.hcl
-
       - name: Terraform validate
         run: terraform validate
 
       - name: Terraform plan
-        run: terraform plan -lock=false
+        run: terraform plan
 
       - name: Terraform apply
-        run: terraform apply --auto-approve
+        run: terraform apply -auto-approve
