@@ -58,11 +58,7 @@ jobs:
            - name: terraform init
              run: terraform init
 
-           - name: terraform plan before destory 
-             run: terraform plan -destroy  
-
-           - name: terraform destroy with SHA as variable 
-             run: terraform destroy --auto-approve 
-
+           - name: terraform destroy  
+             run: terraform destroy --auto-approve
 
  
