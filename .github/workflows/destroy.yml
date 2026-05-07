@@ -1,67 +1,50 @@
-name: Destoying terraform code from AWS
+
+name: Destroy Infrastructure
 
 on:
   workflow_dispatch:
-   inputs:
-    confirm:
-     description: "Type DESTROY to confirm"
-     required: true
-
 
 permissions:
   id-token: write
   contents: read
 
-
-env: 
-  TF_VAR_cloudflare_api_token: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-  TF_VAR_cloudflare_zone_id: ${{ secrets.CLOUDFLARE_ZONE_ID }}
-  TF_VAR_image_uri: ${{ secrets.IMAGE_URI }}
-  TF_VAR_image_tag: ${{ github.sha }}
+env:
+  AWS_REGION: eu-west-2
 
 jobs:
-  deploy:
+  destroy:
     runs-on: ubuntu-latest
+
     defaults:
       run:
         working-directory: infra
 
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Configure AWS credentials (OIDC)
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.TERRAFORM_ARN }}
+          aws-region: ${{ env.AWS_REGION }}
 
 
-    steps: 
-
-           - name: Checkout code
-             uses: actions/checkout@v4
-
-
-
-           - name: Debug directory
-             run: |
-                pwd
-                ls -R
-
-           - name: Validate confirmation
-             run: |
-              if [ "${{ github.event.inputs.confirm }}" != "DESTROY" ]; then
-                echo "Confirmation failed. Exiting."
-                exit 1
-              fi
-
-           - name: Configure AWS credentials (OIDC) 
-             uses: aws-actions/configure-aws-credentials@v4
-             with: 
-              role-to-assume: arn:aws:iam::337170977317:role/TerraformResourceAccess
-              aws-region: eu-west-2
-
-           - name: Install Terraform
-             uses: hashicorp/setup-terraform@v1
-             with:
-              terraform_version: 1.7.0
-
-           - name: terraform init
-             run: terraform init
-
-           - name: terraform destroy  
-             run: terraform destroy --auto-approve
+      - name: Scale ECS service to 0
+        run: |
+          aws ecs update-service \
+            --cluster threat-composer-cluster \
+            --service threat-composer-service \
+            --desired-count 0 || true
 
  
+      - name: Wait for ECS tasks to drain
+        run: |
+          echo "Waiting for ECS tasks to stop..."
+          sleep 60
+
+      - name: Terraform Init
+        run: terraform init
+
+      - name: Terraform Destroy
+        run: terraform destroy -auto-approve
