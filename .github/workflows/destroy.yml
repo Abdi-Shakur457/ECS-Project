@@ -9,6 +9,8 @@ permissions:
 
 env:
   AWS_REGION: eu-west-2
+  TF_VAR_cloudflare_zone_id: ${{ secrets.CLOUDFLARE_ZONE_ID }}
+  TF_VAR_image_uri: ${{ secrets.IMAGE_URI }}
 
 jobs:
   destroy:
@@ -50,3 +52,6 @@ jobs:
 
       - name: Terraform destroy
         run: terraform destroy -auto-approve
+        env: 
+           TF_VAR_cloudflare_api_token: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+           
