@@ -1,22 +1,31 @@
-
-# stage 1 : Build stage 
+# Stage 1: Build
 FROM node:18-alpine AS builder
+
 WORKDIR /app
+
 COPY ./app/package.json ./app/yarn.lock ./
-RUN yarn install 
-COPY ./app /app
-RUN yarn build 
+RUN yarn install --frozen-lockfile
+
+COPY ./app .
+
+RUN yarn build
 
 
-# Stage 2 : Run stage
-FROM node:18-alpine 
-WORKDIR /app 
+# Stage 2: Production
+FROM node:18-alpine
+
+WORKDIR /app
 
 RUN addgroup -S appgroup && adduser -S appuser -G appgroup
+
+# install serve properly (not via yarn global)
+RUN npm install -g serve
+
+# copy build only (clean + safe)
+COPY --from=builder /app/build ./build
+
 USER appuser
 
-COPY --from=builder /app/node_modules ./node_modules
-COPY --from=builder /app/build /app/build
-RUN yarn global add serve
 EXPOSE 3000
+
 CMD ["serve", "-s", "build", "-l", "3000"]
