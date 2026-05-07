@@ -18,5 +18,5 @@ USER appuser
 COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/build /app/build
 RUN yarn global add serve
-EXPOSE 80
-CMD ["serve", "-s", "build", "-l", "80"]
+EXPOSE 3000
+CMD ["serve", "-s", "build", "-l", "3000"]
