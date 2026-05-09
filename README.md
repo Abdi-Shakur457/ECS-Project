@@ -93,8 +93,10 @@ ecs-project/
 ├── app/
 │
 ├── dockerfile
-├── yarn.lock
+├── .dockerignore
+├── .gitignore
 ├── terraform.tfstate
+├── yarn.lock
 │
 ├── infra/
 │   ├── backend.tf
@@ -112,6 +114,13 @@ ecs-project/
 │       ├── ecs/
 │       ├── iam/
 │       └── vpc/
+│
+└── .github/
+    └── workflows/
+        ├── build.yml
+        ├── deploy.yml
+        └── destroy.yml
+
 ```
 
 ---
