@@ -9,6 +9,8 @@ The application was containerised using a multi-stage Docker build and deployed 
 I chose ECS Fargate instead of EC2 to avoid managing servers manually and to take advantage of a serverless container platform that automatically handles scaling and infrastructure management.
 
 Infrastructure provisioning was automated using Terraform, while CI/CD pipelines were implemented using GitHub Actions.
+
+
 ---
 
 ## HTTPS Access to Domain Success 
@@ -16,8 +18,7 @@ Infrastructure provisioning was automated using Terraform, while CI/CD pipelines
 
 
 
-
-
+<img width="1904" height="1078" alt="Application" src="https://github.com/user-attachments/assets/fa906b79-1893-46af-9fdb-0b6aaf8462d4" />
 
 
 
