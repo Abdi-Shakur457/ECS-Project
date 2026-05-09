@@ -1,4 +1,6 @@
-ECS Fargate Deployment Project
+# ECS End To End Fargate Deployment Project on Threat Composer Application 
+
+## Overview
 
 This project demonstrates a fully automated cloud-native deployment pipeline using AWS ECS Fargate, Docker, Terraform, and GitHub Actions.
 
@@ -8,32 +10,52 @@ I chose ECS Fargate instead of EC2 to avoid managing servers manually and to tak
 
 Infrastructure provisioning was automated using Terraform, while CI/CD pipelines were implemented using GitHub Actions.
 
-Architecture
+---
 
-Add architecture diagram here
+# Architecture
 
-Features
-Multi-stage Docker containerisation
-ECS Fargate deployment
-Application Load Balancer
-Public and private subnet architecture
-Terraform Infrastructure as Code
-CI/CD with GitHub Actions
-Cloudflare DNS integration
-CloudWatch logging and monitoring
-Remote Terraform state with S3 + DynamoDB locking
-CI/CD Pipelines
-Build & Push Pipeline
-Builds Docker image
-Tags image using Git SHA
-Pushes image to Amazon ECR
-Deploy Pipeline
-Deploys infrastructure using Terraform
-Updates ECS services/tasks
-Destroy Pipeline
-Safely destroys infrastructure
-Scales ECS services down before destroy
-Repository Structure
+
+
+<img width="543" height="340" alt="MY ECS PROJECT DIAGRAM" src="https://github.com/user-attachments/assets/f05085ea-9dbe-42ec-96eb-d1530958d5b0" />
+
+
+
+---
+
+# Features
+
+- Multi-stage Docker containerisation
+- ECS Fargate deployment
+- Application Load Balancer
+- Public and private subnet architecture
+- Terraform Infrastructure as Code
+- CI/CD with GitHub Actions
+- Cloudflare DNS integration
+- CloudWatch logging and monitoring
+- Remote Terraform state using S3 + DynamoDB locking
+
+---
+
+# CI/CD Pipelines
+
+## Build & Push Pipeline
+- Builds Docker image
+- Tags image using Git SHA
+- Pushes image to Amazon ECR
+
+## Deploy Pipeline
+- Deploys infrastructure using Terraform
+- Updates ECS services and task definitions
+
+## Destroy Pipeline
+- Safely destroys infrastructure
+- Scales ECS services down before destroy
+
+---
+
+# Repository Structure
+
+```bash
 ecs-project/
 │
 ├── app/
@@ -58,25 +80,3 @@ ecs-project/
 │       ├── ecs/
 │       ├── iam/
 │       └── vpc/
-Technologies Used
-Docker
-Amazon ECS Fargate
-Amazon ECR
-Terraform
-GitHub Actions
-Cloudflare
-AWS ALB
-AWS IAM
-AWS ACM
-Amazon CloudWatch
-Lessons Learned
-
-Through this project I gained practical experience with:
-
-Containerisation
-Infrastructure as Code
-AWS networking
-ECS Fargate deployments
-Terraform state management
-CI/CD automation
-Cloud-native troubleshooting
