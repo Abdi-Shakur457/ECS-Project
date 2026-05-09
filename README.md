@@ -32,7 +32,7 @@ ECS Fargate was chosen over EC2 to eliminate the need for server management, all
 
 
 
-<img width="550" height="340" alt="MY ECS PROJECT DIAGRAM" src="https://github.com/user-attachments/assets/f05085ea-9dbe-42ec-96eb-d1530958d5b0" />
+<img width="1904" height="1078" alt="MY ECS PROJECT DIAGRAM" src="https://github.com/user-attachments/assets/f05085ea-9dbe-42ec-96eb-d1530958d5b0" />
 
 
 
