@@ -85,7 +85,7 @@ ECS Fargate was chosen over EC2 to eliminate the need for server management, all
 
 ---
 
-# Repository Structure
+# 📁 Repository Structure
 
 ```bash
 ecs-project/
@@ -112,49 +112,55 @@ ecs-project/
 │       ├── ecs/
 │       ├── iam/
 │       └── vpc/
-
-
+```
 
 ---
 
 ## 🔄 How It Works
 
-1. Developer pushes code to GitHub
-2. GitHub Actions builds Docker image
-3. Image is tagged using Git SHA
-4. Image is pushed to Amazon ECR
-5. Terraform deploys infrastructure (ECS Fargate + ALB)
-6. ECS pulls latest image and runs the container
-7. Application is exposed via ALB public DNS
-
+1. Developer pushes code to GitHub  
+2. GitHub Actions builds Docker image  
+3. Image is tagged using Git SHA  
+4. Image is pushed to Amazon ECR  
+5. Terraform deploys infrastructure (ECS Fargate + ALB)  
+6. ECS pulls latest image and runs the container  
+7. Application is exposed via ALB public DNS  
 
 ---
 
-# How to Access and Run the application Locally
+## 🚀 How to Run the Application Locally
 
 If you want to run the application locally instead of using the deployed AWS version:
 
 ### Step 1: Clone the repository
+```bash
 git clone https://github.com/Abdi-Shakur457/ECS-Project.git
+```
 
 ### Step 2: Navigate into the app folder
+```bash
 cd app
+```
 
 ### Step 3: Build Docker image
+```bash
 docker build -t threat-composer-app .
+```
 
 ### Step 4: Run container locally
+```bash
 docker run -p 3000:3000 threat-composer-app
+```
 
 ### Step 5: Open in browser
+```
 http://localhost:3000
-
+```
 
 ---
 
-## 3. Requirements
+## 🧰 Requirements
 
-- Docker installed
-- AWS account (for deployed version)
+- Docker installed  
+- AWS account (for deployed version)  
 - Terraform (only if modifying infrastructure)
-
