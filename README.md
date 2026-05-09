@@ -9,6 +9,19 @@ The application was containerised using a multi-stage Docker build and deployed 
 I chose ECS Fargate instead of EC2 to avoid managing servers manually and to take advantage of a serverless container platform that automatically handles scaling and infrastructure management.
 
 Infrastructure provisioning was automated using Terraform, while CI/CD pipelines were implemented using GitHub Actions.
+---
+
+## HTTPS Access to Domain Success 
+
+
+
+
+
+
+
+
+
+
 
 ---
 
@@ -43,13 +56,29 @@ Infrastructure provisioning was automated using Terraform, while CI/CD pipelines
 - Tags image using Git SHA
 - Pushes image to Amazon ECR
 
+
+<img width="434" height="329" alt="pipeline 1 success" src="https://github.com/user-attachments/assets/d8e718d0-7e06-4a14-b9fa-b5564466f578" />
+
+
+
+---
 ## Deploy Pipeline
 - Deploys infrastructure using Terraform
 - Updates ECS services and task definitions
 
+
+<img width="350" height="279" alt="pipeline 2 success" src="https://github.com/user-attachments/assets/2c79afe9-aa81-4c56-8ad0-2e51a880031e" />
+
+
+---
 ## Destroy Pipeline
 - Safely destroys infrastructure
 - Scales ECS services down before destroy
+
+
+<img width="419" height="310" alt="pipeline 3 " src="https://github.com/user-attachments/assets/e48bf617-3188-4326-8b58-86963abed170" />
+
+
 
 ---
 
