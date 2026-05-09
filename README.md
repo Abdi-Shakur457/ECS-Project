@@ -60,7 +60,7 @@ ECS Fargate was chosen over EC2 to eliminate the need for server management, all
 - Pushes image to Amazon ECR
 
 
-<img width="434" height="329" alt="pipeline 1 success" src="https://github.com/user-attachments/assets/d8e718d0-7e06-4a14-b9fa-b5564466f578" />
+<img width="1904" height="1078" alt="pipeline 1 success" src="https://github.com/user-attachments/assets/d8e718d0-7e06-4a14-b9fa-b5564466f578" />
 
 
 
@@ -70,7 +70,7 @@ ECS Fargate was chosen over EC2 to eliminate the need for server management, all
 - Updates ECS services and task definitions
 
 
-<img width="350" height="279" alt="pipeline 2 success" src="https://github.com/user-attachments/assets/2c79afe9-aa81-4c56-8ad0-2e51a880031e" />
+<img width="1904" height="1078" alt="pipeline 2 success" src="https://github.com/user-attachments/assets/2c79afe9-aa81-4c56-8ad0-2e51a880031e" />
 
 
 ---
@@ -79,7 +79,7 @@ ECS Fargate was chosen over EC2 to eliminate the need for server management, all
 - Scales ECS services down before destroy
 
 
-<img width="419" height="310" alt="pipeline 3 " src="https://github.com/user-attachments/assets/e48bf617-3188-4326-8b58-86963abed170" />
+<img width="1904" height="1078" alt="pipeline 3 " src="https://github.com/user-attachments/assets/e48bf617-3188-4326-8b58-86963abed170" />
 
 
 
