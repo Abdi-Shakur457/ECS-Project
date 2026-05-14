@@ -1,6 +1,12 @@
 resource "aws_ecs_cluster" "ecs_cluster" {
   name = "threat-composer-cluster"
+
+  tags = {
+    Name = "threat-composer-cluster"
+  }
 }
+
+
 
 resource "aws_ecs_task_definition" "ecs_task_definition" {
   family                   = "threat-composer-app"
@@ -14,9 +20,9 @@ resource "aws_ecs_task_definition" "ecs_task_definition" {
   container_definitions = jsonencode([
     {
       name      = "threat-composer-app"
-      #image     = var.image_uri
-      image = "${var.image_uri}:${var.image_tag}"
+      image     = "${var.image_uri}:${var.image_tag}"
       essential = true
+
       portMappings = [
         {
           containerPort = var.container_port
@@ -25,27 +31,37 @@ resource "aws_ecs_task_definition" "ecs_task_definition" {
       ]
     }
   ])
+
+  tags = {
+    Name = "threat-composer-task"
+  }
 }
 
 
-
 resource "aws_security_group" "ecs_sg" {
-    name        = "ecs_sg"
-    description = "Security group for ECS"
-    vpc_id      = var.vpc_id
-    ingress {
-        from_port   = 3000
-        to_port     = 3000
-        protocol    = "tcp"
-        security_groups = [var.alb_sg_id]
-    }
+  name        = "ecs-sg"
+  description = "Security group for ECS tasks"
+  vpc_id      = var.vpc_id
 
-    egress {
-        from_port   = 0
-        to_port     = 0
-        protocol    = "-1"
-        cidr_blocks = ["0.0.0.0/0"]
-    }
+  tags = {
+    Name = "ecs-sg"
+  }
+}
+
+resource "aws_vpc_security_group_ingress_rule" "ecs_from_alb" {
+  security_group_id            = aws_security_group.ecs_sg.id
+  referenced_security_group_id = var.alb_sg_id
+
+  from_port   = 3000
+  to_port     = 3000
+  ip_protocol = "tcp"
+}
+
+
+resource "aws_vpc_security_group_egress_rule" "ecs_all_outbound" {
+  security_group_id = aws_security_group.ecs_sg.id
+  cidr_ipv4         = "0.0.0.0/0"
+  ip_protocol       = "-1"
 }
 
 resource "aws_ecs_service" "ecs_service" {
@@ -54,7 +70,7 @@ resource "aws_ecs_service" "ecs_service" {
   task_definition = aws_ecs_task_definition.ecs_task_definition.arn
   desired_count   = 1
   launch_type     = "FARGATE"
-  
+
   network_configuration {
     subnets         = var.private_subnet_ids
     security_groups = [aws_security_group.ecs_sg.id]
@@ -65,5 +81,11 @@ resource "aws_ecs_service" "ecs_service" {
     target_group_arn = var.target_group_arn
     container_name   = "threat-composer-app"
     container_port   = var.container_port
+  }
+
+  depends_on = [aws_vpc_security_group_ingress_rule.ecs_from_alb]
+
+  tags = {
+    Name = "threat-composer-service"
   }
 }

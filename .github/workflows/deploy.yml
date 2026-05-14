@@ -50,6 +50,12 @@ jobs:
       - name: Terraform validate
         run: terraform validate
 
+      - name: Run Checkov Terraform Scan
+        uses: bridgecrewio/checkov-action@master
+        with:
+         directory: ./infra
+         framework: terraform
+
       - name: Terraform plan
         run: terraform plan
 

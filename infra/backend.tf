@@ -18,7 +18,10 @@ terraform {
     key            = "ecs-project/terraform.tfstate"
     region         = "eu-west-2"
     encrypt        = true
-    dynamodb_table = "ecs-terraform-locks"
+    #dynamodb_table = "ecs-terraform-locks"
+    use_lockfile = true 
+
+  
   }
 }
 

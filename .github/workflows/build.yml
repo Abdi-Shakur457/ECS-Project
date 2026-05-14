@@ -33,6 +33,17 @@ jobs:
         run: |
           docker build -t ${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}:${{ github.sha }} .
 
+
+      - name: Run Trivy vulnerability scanner
+        uses: aquasecurity/trivy-action@master
+        with:
+         image-ref: ${{ steps.login-ecr.outputs.registry }}/threat-composer-app:${{ github.sha }}
+         format: table
+         exit-code: 1
+         ignore-unfixed: true
+         vuln-type: 'os,library'
+         severity: 'CRITICAL,HIGH'
+
       - name: Push Docker image
         run: |
           docker push ${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}:${{ github.sha }}
