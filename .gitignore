@@ -27,4 +27,6 @@ yarn-error.log*
 .terraform.lock.hcl
 
 # Docker files
-docker-compose.override.yml
+docker-compose.override.yml*.tfvars
+terraform.tfstate
+.terraform/
