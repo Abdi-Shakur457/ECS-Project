@@ -19,5 +19,5 @@ ecs_memory = 512
 container_port = 3000
 host_port      = 3000
 
-domain_name = "abdishakurosman.uk"
+domain_name = "ecs.abdishakurosman.uk"
 
