@@ -55,6 +55,9 @@ jobs:
         with:
          directory: ./infra
          framework: terraform
+         check: CRITICAL
+        
+         
 
       - name: Terraform plan
         run: terraform plan
