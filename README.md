@@ -143,7 +143,7 @@ If you want to run the application locally instead of using the deployed AWS ver
 
 ### Step 1: Clone the repository
 ```bash
-git clone https://github.com/Abdi-Shakur457/ECS-Project.git
+git clone https://github.com/Abdi-Shakur457/threat-composer-fargate.git
 ```
 
 ### Step 2: Navigate into the app folder
