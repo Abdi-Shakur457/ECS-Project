@@ -30,8 +30,6 @@ ECS Fargate was chosen over EC2 to remove the need for server management, with A
 
 # Architecture
 
-## High-level architecture of the CI/CD workflow and AWS deployment environment for the Threat Composer application.
-
 
 
 <img width="1904" height="1078" alt="MY ECS PROJECT DIAGRAM" src="https://github.com/user-attachments/assets/f05085ea-9dbe-42ec-96eb-d1530958d5b0" />
