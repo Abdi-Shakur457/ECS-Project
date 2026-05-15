@@ -28,7 +28,7 @@ ECS Fargate was chosen over EC2 to remove the need for server management, with A
 
 ---
 
-# Architecture
+# AWS Architecture Diagram
 
 
 
