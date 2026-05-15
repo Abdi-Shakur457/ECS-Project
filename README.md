@@ -1,17 +1,17 @@
 #  ECS Fargate End-to-End CI/CD Deployment Project (Threat Composer)
 
 ## Overview
+This project demonstrates a fully automated CI/CD pipeline deployed on AWS using ECS Fargate, Docker, Terraform, and GitHub Actions.
 
-This project demonstrates a fully automated, cloud-native CI/CD pipeline deployed on AWS using ECS Fargate, Docker, Terraform, and GitHub Actions.
+The project, “Threat Composer”, is a web application that I containerised and deployed as a real-world workload to demonstrate end-to-end CI/CD, infrastructure automation, and cloud-native deployment on AWS.
 
-The application is containerised using a multi-stage Docker build and deployed to AWS ECS Fargate, running behind an Application Load Balancer within a secure multi-AZ VPC architecture.
+The application is containerised using a multi-stage Docker build and deployed to AWS ECS Fargate behind an Application Load Balancer in a secure multi-AZ VPC.
 
-Infrastructure provisioning is fully automated using Terraform, enabling Infrastructure as Code (IaC) for consistent and repeatable deployments.
+Infrastructure is fully defined using Terraform (Infrastructure as Code), enabling consistent and repeatable deployments across environments.
 
-CI/CD automation is implemented using GitHub Actions, where Docker images are built, tagged using the Git commit SHA, and pushed to Amazon ECR before being deployed to ECS.
+The CI/CD pipeline is implemented using GitHub Actions, where Docker images are built, tagged using the Git commit SHA, pushed to Amazon ECR, and then deployed to ECS.
 
-ECS Fargate was chosen over EC2 to eliminate the need for server management, allowing AWS to handle scaling, provisioning, and underlying infrastructure automatically.
-
+ECS Fargate was chosen over EC2 to remove the need for server management, with AWS handling scaling, provisioning, and infrastructure maintenance automatically.
 
 ---
 
@@ -29,6 +29,8 @@ ECS Fargate was chosen over EC2 to eliminate the need for server management, all
 ---
 
 # Architecture
+
+## High-level architecture of the CI/CD workflow and AWS deployment environment for the Threat Composer application.
 
 
 
