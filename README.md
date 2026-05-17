@@ -1,4 +1,4 @@
-#  Threat Composer – Production-Grade AWS ECS Fargate Platform
+#  Threat Composer – Production-Grade AWS ECS Fargate Project
 ## Overview
 This project demonstrates a fully automated CI/CD pipeline deployed on AWS using ECS Fargate, Docker, Terraform, and GitHub Actions.
 
